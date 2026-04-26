@@ -57,101 +57,115 @@ export function AuthPage({ mode }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors">
-      <div className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-md rounded-2xl bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">CV Builder ✏️</h1>
-            <p className="mt-2 text-slate-600 dark:text-slate-400">
-              {isSignUp ? 'Create your account' : 'Welcome back'}
-            </p>
-          </div>
+      <div className="flex-1 flex flex-col justify-center items-center p-4">
+        <div className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden transition-colors border border-slate-100 dark:border-slate-700">
+          <div className="p-8">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-100 dark:bg-indigo-900/50 mb-4">
+                <span className="text-3xl">✏️</span>
+              </div>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">CV Builder</h1>
+              <p className="mt-2 text-slate-500 dark:text-slate-400">
+                {isSignUp ? 'Create your account' : 'Welcome back'}
+              </p>
+            </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && <div className="rounded-md bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-500 dark:text-red-400">{error}</div>}
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {error && (
+                <div className="rounded-lg bg-red-50 dark:bg-red-900/30 p-4 border border-red-200 dark:border-red-800">
+                  <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+                </div>
+              )}
 
-            {isSignUp && (
+              {isSignUp && (
+                <Input
+                  id="name"
+                  label="Full Name"
+                  type="text"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  placeholder="John Doe"
+                  required
+                />
+              )}
+
               <Input
-                id="name"
-                label="Full Name"
-                type="text"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                placeholder="John Doe"
+                id="email"
+                label="Email"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="you@example.com"
                 required
               />
-            )}
-
-            <Input
-              id="email"
-              label="Email"
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@example.com"
-              required
-            />
-            <Input
-              id="password"
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Enter your password"
-              required
-            />
-
-            {isSignUp && (
               <Input
-                id="confirmPassword"
-                label="Confirm Password"
+                id="password"
+                label="Password"
                 type="password"
-                value={confirmPassword}
-                onChange={(event) => setConfirmPassword(event.target.value)}
-                placeholder="Confirm your password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="Enter your password"
                 required
               />
-            )}
 
-            <Button type="submit" className="w-full mt-6" isLoading={loading}>
-              {isSignUp ? 'Create Account' : 'Sign In'}
-            </Button>
-          </form>
+              {isSignUp && (
+                <Input
+                  id="confirmPassword"
+                  label="Confirm Password"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(event) => setConfirmPassword(event.target.value)}
+                  placeholder="Confirm your password"
+                  required
+                />
+              )}
 
-          <p className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
-            {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
-            <Link
-              to={isSignUp ? '/auth/signin' : '/auth/signup'}
-              className="font-medium text-indigo-600 dark:text-indigo-400 hover:underline"
+              <Button type="submit" className="w-full mt-2 py-3 text-base" isLoading={loading}>
+                {isSignUp ? 'Create Account' : 'Sign In'}
+              </Button>
+            </form>
+
+            <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700 text-center">
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
+                <Link
+                  to={isSignUp ? '/auth/signin' : '/auth/signup'}
+                  className="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500"
+                >
+                  {isSignUp ? 'Sign in' : 'Sign up'}
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        {/* Footer with version and theme toggle */}
+        <div className="mt-8 flex flex-col items-center space-y-4">
+          <div className="flex items-center bg-white dark:bg-slate-800 rounded-full shadow-sm border border-slate-200 dark:border-slate-700 p-1 transition-colors">
+            <button
+              onClick={() => setTheme('system')}
+              className={`p-2 rounded-full transition-all duration-200 ${theme === 'system' ? 'bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 shadow-inner' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}
+              aria-label="System theme"
             >
-              {isSignUp ? 'Sign in' : 'Sign up'}
-            </Link>
-          </p>
+              <Monitor className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => setTheme('light')}
+              className={`p-2 rounded-full transition-all duration-200 ${theme === 'light' ? 'bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 shadow-inner' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}
+              aria-label="Light theme"
+            >
+              <Sun className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => setTheme('dark')}
+              className={`p-2 rounded-full transition-all duration-200 ${theme === 'dark' ? 'bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 shadow-inner' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}
+              aria-label="Dark theme"
+            >
+              <Moon className="h-4 w-4" />
+            </button>
+          </div>
+          <p className="text-xs font-medium text-slate-400 dark:text-slate-500 tracking-wider">v1.0.0</p>
         </div>
-      </div>
-      
-      {/* Footer with version and theme toggle */}
-      <div className="py-6 flex flex-col items-center space-y-4">
-        <div className="flex bg-slate-200 dark:bg-slate-800 rounded-lg p-1 transition-colors">
-          <button
-            onClick={() => setTheme('system')}
-            className={`p-2 rounded-md transition-colors ${theme === 'system' ? 'bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-indigo-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'}`}
-          >
-            <Monitor className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => setTheme('light')}
-            className={`p-2 rounded-md transition-colors ${theme === 'light' ? 'bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-indigo-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'}`}
-          >
-            <Sun className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => setTheme('dark')}
-            className={`p-2 rounded-md transition-colors ${theme === 'dark' ? 'bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-indigo-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'}`}
-          >
-            <Moon className="h-4 w-4" />
-          </button>
-        </div>
-        <p className="text-xs text-slate-400 dark:text-slate-500">v1.0.0</p>
       </div>
     </div>
   );
@@ -187,37 +201,43 @@ export function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 flex flex-col transition-colors pb-16">
-      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-20 transition-colors">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col transition-colors pb-16">
+      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 transition-colors shadow-sm">
         <div className="px-4 h-14 flex items-center justify-between">
-          <h1 className="text-lg font-bold text-slate-900 dark:text-white">CV Builder ✏️</h1>
+          <div className="flex items-center gap-2">
+            <span className="text-xl">✏️</span>
+            <h1 className="text-lg font-bold text-slate-900 dark:text-white">CV Builder</h1>
+          </div>
           <SaveStatus status={saveStatus} />
         </div>
       </header>
 
-      <main className="flex-1 w-full relative">
+      <main className="flex-1 w-full relative flex flex-col">
         {/* Forms Tab */}
-        <div className={activeTab === 'forms' ? 'block pb-6' : 'hidden'}>
+        <div className={activeTab === 'forms' ? 'flex-1 pb-6' : 'hidden'}>
           <CVForm data={data} onChange={setData} />
         </div>
 
         {/* Preview Tab */}
-        <div className={activeTab === 'preview' ? 'block flex flex-col h-full' : 'hidden'}>
-          <div className="p-4 flex justify-center sticky top-14 z-10 bg-slate-100/90 dark:bg-slate-950/90 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800 transition-colors">
-            <Button variant="primary" className="w-full max-w-sm" onClick={handleDownload} isLoading={isDownloading}>
+        <div className={activeTab === 'preview' ? 'flex-1 flex flex-col h-full overflow-hidden' : 'hidden'}>
+          <div className="p-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm z-20">
+            <Button variant="primary" className="w-full" onClick={handleDownload} isLoading={isDownloading}>
               <Download className="h-4 w-4 mr-2" />
               Download PDF
             </Button>
           </div>
-          <div className="p-4 flex justify-center overflow-auto pb-10">
-            <div className="w-[210mm] max-w-full origin-top scale-[0.45] sm:scale-[0.6] md:scale-[0.8] transition-transform">
-              <CVPreview data={data} />
+          <div className="flex-1 overflow-auto bg-slate-200 dark:bg-slate-800 flex justify-center p-4 sm:p-8 custom-scrollbar">
+            {/* Wrapper to handle scaling nicely without breaking layout */}
+            <div className="relative" style={{ width: '210mm', height: '297mm', transformOrigin: 'top center', transform: 'scale(min(1, calc((100vw - 2rem) / 794)))' }}>
+              <div className="absolute top-0 left-0 w-[210mm]">
+                <CVPreview data={data} />
+              </div>
             </div>
           </div>
         </div>
 
         {/* Settings Tab */}
-        <div className={activeTab === 'settings' ? 'block' : 'hidden'}>
+        <div className={activeTab === 'settings' ? 'flex-1' : 'hidden'}>
           <Settings />
         </div>
       </main>
