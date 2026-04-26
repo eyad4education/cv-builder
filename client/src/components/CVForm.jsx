@@ -16,7 +16,7 @@ function createId(prefix) {
 
 function EmptyState({ label }) {
   return (
-    <div className="text-center py-8 text-slate-500 bg-slate-50 rounded-lg border border-dashed border-slate-300">
+    <div className="text-center py-8 text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700 transition-colors">
       {label}
     </div>
   );
@@ -152,7 +152,7 @@ export function CVForm({ data, onChange }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-end items-center mb-2">
+      <div className="w-full mb-2">
         <SectionToggle
           order={data.sectionOrder}
           onChange={(order) => updateRoot('sectionOrder', order)}
@@ -160,7 +160,7 @@ export function CVForm({ data, onChange }) {
       </div>
 
       <div className={panelClassName}>
-        <h2 className="text-lg font-semibold text-slate-900 border-b border-slate-100 pb-2 mb-4">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-2 mb-4 transition-colors">
           Personal Information
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -217,7 +217,7 @@ export function CVForm({ data, onChange }) {
       </div>
 
       <div className={panelClassName}>
-        <h2 className="text-lg font-semibold text-slate-900 border-b border-slate-100 pb-2 mb-4">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-2 mb-4 transition-colors">
           Professional Summary
         </h2>
         <div className="relative">
@@ -236,8 +236,8 @@ export function CVForm({ data, onChange }) {
       {data.sectionOrder === 'experience' ? (
         <>
           <div className={panelClassName}>
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2 mb-4">
-              <h2 className="text-lg font-semibold text-slate-900">Work Experience</h2>
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-2 mb-4 transition-colors">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white transition-colors">Work Experience</h2>
               <Button variant="ghost" size="sm" onClick={addExperience}>
                 <Plus className="h-4 w-4 mr-1" /> Add
               </Button>
@@ -247,11 +247,11 @@ export function CVForm({ data, onChange }) {
               {data.experience.map((item) => (
                 <div
                   key={item.id}
-                  className="p-4 bg-slate-50 rounded-lg border border-slate-200 relative group"
+                  className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700 transition-colors relative group"
                 >
                   <button
                     onClick={() => removeExperience(item.id)}
-                    className="absolute top-2 right-2 p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md opacity-0 group-hover:opacity-100 transition-all"
+                    className="absolute top-2 right-2 p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md opacity-0 group-hover:opacity-100 transition-all"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -306,7 +306,7 @@ export function CVForm({ data, onChange }) {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5 transition-colors">
                       Description
                     </label>
                     <textarea
@@ -317,7 +317,7 @@ export function CVForm({ data, onChange }) {
                         updateExperience(item.id, 'description', event.target.value)
                       }
                     />
-                    <p className="text-xs text-slate-500 mt-1">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 transition-colors">
                       Use bullet points for better readability.
                     </p>
                   </div>
@@ -331,8 +331,8 @@ export function CVForm({ data, onChange }) {
           </div>
 
           <div className={panelClassName}>
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2 mb-4">
-              <h2 className="text-lg font-semibold text-slate-900">Education</h2>
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-2 mb-4 transition-colors">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white transition-colors">Education</h2>
               <Button variant="ghost" size="sm" onClick={addEducation}>
                 <Plus className="h-4 w-4 mr-1" /> Add
               </Button>
@@ -342,11 +342,11 @@ export function CVForm({ data, onChange }) {
               {data.education.map((item) => (
                 <div
                   key={item.id}
-                  className="p-4 bg-slate-50 rounded-lg border border-slate-200 relative group"
+                  className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700 transition-colors relative group"
                 >
                   <button
                     onClick={() => removeEducation(item.id)}
-                    className="absolute top-2 right-2 p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md opacity-0 group-hover:opacity-100 transition-all"
+                    className="absolute top-2 right-2 p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md opacity-0 group-hover:opacity-100 transition-all"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -414,8 +414,8 @@ export function CVForm({ data, onChange }) {
       ) : (
         <>
           <div className={panelClassName}>
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2 mb-4">
-              <h2 className="text-lg font-semibold text-slate-900">Education</h2>
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-2 mb-4 transition-colors">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white transition-colors">Education</h2>
               <Button variant="ghost" size="sm" onClick={addEducation}>
                 <Plus className="h-4 w-4 mr-1" /> Add
               </Button>
@@ -425,11 +425,11 @@ export function CVForm({ data, onChange }) {
               {data.education.map((item) => (
                 <div
                   key={item.id}
-                  className="p-4 bg-slate-50 rounded-lg border border-slate-200 relative group"
+                  className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700 transition-colors relative group"
                 >
                   <button
                     onClick={() => removeEducation(item.id)}
-                    className="absolute top-2 right-2 p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md opacity-0 group-hover:opacity-100 transition-all"
+                    className="absolute top-2 right-2 p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md opacity-0 group-hover:opacity-100 transition-all"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -495,8 +495,8 @@ export function CVForm({ data, onChange }) {
           </div>
 
           <div className={panelClassName}>
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2 mb-4">
-              <h2 className="text-lg font-semibold text-slate-900">Work Experience</h2>
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-2 mb-4 transition-colors">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white transition-colors">Work Experience</h2>
               <Button variant="ghost" size="sm" onClick={addExperience}>
                 <Plus className="h-4 w-4 mr-1" /> Add
               </Button>
@@ -506,11 +506,11 @@ export function CVForm({ data, onChange }) {
               {data.experience.map((item) => (
                 <div
                   key={item.id}
-                  className="p-4 bg-slate-50 rounded-lg border border-slate-200 relative group"
+                  className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700 transition-colors relative group"
                 >
                   <button
                     onClick={() => removeExperience(item.id)}
-                    className="absolute top-2 right-2 p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md opacity-0 group-hover:opacity-100 transition-all"
+                    className="absolute top-2 right-2 p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md opacity-0 group-hover:opacity-100 transition-all"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -565,7 +565,7 @@ export function CVForm({ data, onChange }) {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5 transition-colors">
                       Description
                     </label>
                     <textarea
@@ -576,7 +576,7 @@ export function CVForm({ data, onChange }) {
                         updateExperience(item.id, 'description', event.target.value)
                       }
                     />
-                    <p className="text-xs text-slate-500 mt-1">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 transition-colors">
                       Use bullet points for better readability.
                     </p>
                   </div>
@@ -592,7 +592,7 @@ export function CVForm({ data, onChange }) {
       )}
 
       <div className={panelClassName}>
-        <h2 className="text-lg font-semibold text-slate-900 border-b border-slate-100 pb-2 mb-4">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-2 mb-4 transition-colors">
           Skills
         </h2>
         <TagInput
@@ -604,8 +604,8 @@ export function CVForm({ data, onChange }) {
       </div>
 
       <div className={panelClassName}>
-        <div className="flex items-center justify-between border-b border-slate-100 pb-2 mb-4">
-          <h2 className="text-lg font-semibold text-slate-900">Certifications</h2>
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-2 mb-4 transition-colors">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white transition-colors">Certifications</h2>
           <Button variant="ghost" size="sm" onClick={addCertification}>
             <Plus className="h-4 w-4 mr-1" /> Add
           </Button>
@@ -615,7 +615,7 @@ export function CVForm({ data, onChange }) {
           {data.certifications.map((item) => (
             <div
               key={item.id}
-              className="p-4 bg-slate-50 rounded-lg border border-slate-200 relative group"
+              className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700 transition-colors relative group"
             >
               <button
                 onClick={() => removeCertification(item.id)}
@@ -660,8 +660,8 @@ export function CVForm({ data, onChange }) {
       </div>
 
       <div className={panelClassName}>
-        <div className="flex items-center justify-between border-b border-slate-100 pb-2 mb-4">
-          <h2 className="text-lg font-semibold text-slate-900">Languages</h2>
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-2 mb-4 transition-colors">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white transition-colors">Languages</h2>
           <Button variant="ghost" size="sm" onClick={addLanguage}>
             <Plus className="h-4 w-4 mr-1" /> Add
           </Button>
@@ -671,7 +671,7 @@ export function CVForm({ data, onChange }) {
           {data.languages.map((item) => (
             <div
               key={item.id}
-              className="p-4 bg-slate-50 rounded-lg border border-slate-200 relative group"
+              className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700 transition-colors relative group"
             >
               <button
                 onClick={() => removeLanguage(item.id)}
@@ -688,7 +688,7 @@ export function CVForm({ data, onChange }) {
                   placeholder="Spanish"
                 />
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5 transition-colors">
                     Proficiency
                   </label>
                   <select

@@ -230,15 +230,7 @@ export function Dashboard() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col transition-colors pb-16">
-      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 transition-colors shadow-sm">
-        <div className="px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">✏️</span>
-            <h1 className="text-lg font-bold text-slate-900 dark:text-white">CV Builder</h1>
-          </div>
-          <SaveStatus status={saveStatus} />
-        </div>
-      </header>
+
 
       <main className="flex-1 w-full relative flex flex-col">
         {/* Forms Tab */}
@@ -248,12 +240,7 @@ export function Dashboard() {
 
         {/* Preview Tab */}
         <div className={activeTab === 'preview' ? 'flex-1 flex flex-col' : 'hidden'} style={{ minHeight: 0 }}>
-          <div className="p-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm z-20 shrink-0">
-            <Button variant="primary" className="w-full" onClick={handleDownload} isLoading={isDownloading}>
-              <Download className="h-4 w-4 mr-2" />
-              Download PDF
-            </Button>
-          </div>
+
           {/*
             The scroll container fills all remaining space.
             overflow: auto + touch-action: pan-x pan-y pinch-zoom = native pinch-to-zoom on mobile.
@@ -261,7 +248,7 @@ export function Dashboard() {
           */}
           <div
             ref={containerRef}
-            className="flex-1 overflow-auto bg-slate-200 dark:bg-slate-800 flex justify-center items-start"
+            className="flex-1 overflow-auto bg-slate-200 dark:bg-slate-800 flex justify-center items-center"
             style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
           >
             {/*
@@ -291,6 +278,12 @@ export function Dashboard() {
                 <CVPreview data={data} />
               </div>
             </div>
+          </div>
+          <div className="p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shadow-sm z-20 shrink-0">
+            <Button variant="primary" className="w-full" onClick={handleDownload} isLoading={isDownloading}>
+              <Download className="h-4 w-4 mr-2" />
+              Download PDF
+            </Button>
           </div>
         </div>
 

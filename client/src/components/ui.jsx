@@ -162,14 +162,14 @@ export function SaveStatus({ status }) {
 
 export function SectionToggle({ order, onChange }) {
   return (
-    <div className="flex items-center gap-2 bg-white dark:bg-slate-800 p-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm transition-colors">
+    <div className="flex items-center gap-2 bg-white dark:bg-slate-800 p-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm transition-colors w-full">
       <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider px-2">
         Prioritize:
       </span>
       <button
         onClick={() => onChange('experience')}
         className={cn(
-          'px-3 py-1.5 text-sm font-medium rounded-md transition-all',
+          'flex-1 px-3 py-1.5 text-sm font-medium rounded-md transition-all',
             order === 'experience'
               ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 shadow-sm'
               : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50'
@@ -177,11 +177,11 @@ export function SectionToggle({ order, onChange }) {
       >
         Experience
       </button>
-      <ArrowUpDown className="h-4 w-4 text-slate-400" />
+      <ArrowUpDown className="h-4 w-4 text-slate-400 shrink-0" />
       <button
         onClick={() => onChange('education')}
         className={cn(
-          'px-3 py-1.5 text-sm font-medium rounded-md transition-all',
+          'flex-1 px-3 py-1.5 text-sm font-medium rounded-md transition-all',
             order === 'education'
               ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 shadow-sm'
               : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50'
