@@ -39,12 +39,12 @@ jobs:
         working-directory: client
         run: npx cap sync android
 
-      # ── 6. Java 17 ───────────────────────────────────────────────────────────
-      - name: Set up Java 17
+      # ── 6. Java 21 ───────────────────────────────────────────────────────────
+      - name: Set up Java 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       # ── 7. Android SDK ───────────────────────────────────────────────────────
       - name: Set up Android SDK
