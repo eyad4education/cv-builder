@@ -16,7 +16,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 app.use(
   cors({
-    origin: clientUrl,
+    origin: clientUrl === '*' ? true : clientUrl,
   })
 );
 app.use(express.json({ limit: '1mb' }));

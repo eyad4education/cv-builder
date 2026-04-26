@@ -7,3 +7,9 @@ client/dist/
 client/.env
 server/.env
 npm-debug.log*
+
+# Android build outputs (generated — do not commit)
+client/android/.gradle/
+client/android/app/build/
+client/android/build/
+client/android/local.properties
