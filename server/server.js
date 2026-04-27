@@ -1,3 +1,4 @@
+// Server v2 — includes profile update, account deletion, and multi-CV routes
 require('dotenv').config();
 
 const bcrypt = require('bcryptjs');
