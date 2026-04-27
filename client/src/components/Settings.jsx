@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Moon, Sun, Monitor, LogOut, Trash2, AlertTriangle, X, Loader2, FileText } from 'lucide-react';
+import { Moon, Sun, Monitor, LogOut, Trash2, AlertTriangle, X, Loader2, FileText, Pencil, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../context/AuthContext';
@@ -7,20 +7,54 @@ import { useTheme } from '../context/ThemeContext';
 import { authApi, cvsApi } from '../services/api';
 
 export function Settings() {
-  const { signOut, user } = useAuth();
+  const { signOut, user, updateProfile } = useAuth();
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
 
+  // ── Name editing ────────────────────────────────────────────────
+  const [editingName, setEditingName] = useState(false);
+  const [nameValue, setNameValue] = useState(user?.name || '');
+  const [savingName, setSavingName] = useState(false);
+  const [nameError, setNameError] = useState('');
+
+  function handleStartEditName() {
+    setNameValue(user?.name || '');
+    setNameError('');
+    setEditingName(true);
+  }
+
+  function handleCancelEditName() {
+    setEditingName(false);
+    setNameError('');
+  }
+
+  async function handleSaveName() {
+    const trimmed = nameValue.trim();
+    if (!trimmed) { setNameError('Name cannot be empty'); return; }
+    setSavingName(true);
+    setNameError('');
+    try {
+      await updateProfile(trimmed);
+      setEditingName(false);
+    } catch (err) {
+      setNameError(err?.message || 'Failed to update name');
+    } finally {
+      setSavingName(false);
+    }
+  }
+
+  // ── Sign out ─────────────────────────────────────────────────────
+  function handleSignOut() {
+    signOut();
+    navigate('/');
+  }
+
+  // ── Delete account ───────────────────────────────────────────────
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [cvList, setCvList] = useState([]);
   const [loadingCvs, setLoadingCvs] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState('');
-
-  function handleSignOut() {
-    signOut();
-    navigate('/');
-  }
 
   async function handleOpenDeleteModal() {
     setShowDeleteModal(true);
@@ -61,21 +95,72 @@ export function Settings() {
     { id: 'dark',   label: 'Dark',           icon: Moon },
   ];
 
+  const avatarLetter = (user?.name || user?.email || '?')[0].toUpperCase();
+
   return (
     <div className="p-4 space-y-4 pb-24">
 
       {/* ── Account ─────────────────────────────────────────────── */}
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm overflow-hidden transition-colors">
-        {/* User row */}
-        <div className="flex items-center gap-3 p-4 border-b border-slate-100 dark:border-slate-700">
-          <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/40 flex items-center justify-center flex-none select-none">
-            <span className="text-green-700 dark:text-green-300 font-bold text-sm uppercase">
-              {user?.email?.[0] ?? '?'}
-            </span>
+
+        {/* Avatar + name (editable) + email */}
+        <div className="flex items-start gap-3 p-4 border-b border-slate-100 dark:border-slate-700">
+          <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/40 flex items-center justify-center flex-none select-none mt-0.5">
+            <span className="text-green-700 dark:text-green-300 font-bold text-sm">{avatarLetter}</span>
           </div>
-          <div className="min-w-0">
-            <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">Account</p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{user?.email}</p>
+
+          <div className="flex-1 min-w-0">
+            {editingName ? (
+              /* ── Edit mode ── */
+              <div className="space-y-1.5">
+                <input
+                  autoFocus
+                  value={nameValue}
+                  onChange={(e) => setNameValue(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleSaveName();
+                    if (e.key === 'Escape') handleCancelEditName();
+                  }}
+                  maxLength={100}
+                  className="w-full text-sm font-semibold text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-700 border border-green-400 dark:border-green-600 rounded-lg px-2 py-1 outline-none focus:ring-2 focus:ring-green-400/30 transition-colors"
+                />
+                {nameError && (
+                  <p className="text-xs text-red-500 dark:text-red-400">{nameError}</p>
+                )}
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleSaveName}
+                    disabled={savingName}
+                    className="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors disabled:opacity-60"
+                  >
+                    {savingName ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />}
+                    Save
+                  </button>
+                  <button
+                    onClick={handleCancelEditName}
+                    disabled={savingName}
+                    className="px-2.5 py-1 text-xs font-semibold text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-md transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* ── View mode ── */
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">{user?.name}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{user?.email}</p>
+                </div>
+                <button
+                  onClick={handleStartEditName}
+                  title="Edit name"
+                  className="p-1.5 text-slate-400 hover:text-green-600 dark:hover:text-green-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors flex-none"
+                >
+                  <Pencil className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -146,11 +231,6 @@ export function Settings() {
 
       {/* ── Delete Account Modal ─────────────────────────────────── */}
       {showDeleteModal && (
-        /*
-          z-[60] ensures this sits above the bottom nav (z-50).
-          items-center centers the modal on all screen sizes,
-          avoiding the nav-bar overlap that happens with items-end.
-        */
         <div
           className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
           onClick={handleCloseDeleteModal}
@@ -186,12 +266,10 @@ export function Settings() {
                 <span className="font-semibold text-slate-800 dark:text-slate-200">cannot be undone</span>.
               </p>
 
-              {/* CV list */}
               <div>
                 <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
                   CVs that will be deleted
                 </p>
-
                 {loadingCvs ? (
                   <div className="flex items-center justify-center py-5">
                     <Loader2 className="h-5 w-5 animate-spin text-slate-400" />
