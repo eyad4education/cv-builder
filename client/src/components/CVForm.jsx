@@ -32,7 +32,7 @@ export function CVForm({ data, onChange }) {
     setIsReformulating(true);
     try {
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
         {
           method: 'POST',
           headers: {
@@ -60,7 +60,7 @@ export function CVForm({ data, onChange }) {
         }
         updateRoot('summary', newSummary.slice(0, 500));
       } else {
-        console.error('Unexpected API response:', JSON.stringify(result));
+        console.error('Unexpected API response:', result);
         alert('Failed to reformulate summary. Please try again.');
       }
     } catch (error) {
@@ -78,7 +78,7 @@ export function CVForm({ data, onChange }) {
       const role = item.jobTitle ? item.jobTitle : 'professional';
       const context = item.company ? ` at ${item.company}` : '';
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -100,7 +100,7 @@ export function CVForm({ data, onChange }) {
         const newDesc = result.candidates[0].content.parts[0].text.trim().slice(0, 1200);
         updateExperience(item.id, 'description', newDesc);
       } else {
-        console.error('Unexpected API response:', JSON.stringify(result));
+        console.error('Unexpected API response:', result);
         alert('Failed to reformulate description. Please try again.');
       }
     } catch (error) {
