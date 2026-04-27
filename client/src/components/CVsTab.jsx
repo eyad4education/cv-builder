@@ -134,7 +134,7 @@ export function CVsTab({ cvs, activeCvId, onSelect, onAdd, onDelete, onRename, m
                   <>
                     <button
                       onClick={(e) => startRename(cv, e)}
-                      className="p-1.5 text-slate-400 hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-md transition-colors"
+                      className="p-1.5 rounded-md bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-800/50 transition-colors"
                       title="Rename"
                     >
                       <Pencil className="h-3.5 w-3.5" />
@@ -142,7 +142,7 @@ export function CVsTab({ cvs, activeCvId, onSelect, onAdd, onDelete, onRename, m
                     <button
                       onClick={(e) => { e.stopPropagation(); onDelete(cv.id); }}
                       disabled={cvs.length <= 1}
-                      className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors disabled:opacity-30 disabled:pointer-events-none"
+                      className="p-1.5 rounded-md bg-red-50 dark:bg-red-900/30 text-red-500 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-800/50 transition-colors disabled:opacity-30 disabled:pointer-events-none"
                       title="Delete"
                     >
                       <Trash2 className="h-3.5 w-3.5" />

@@ -155,7 +155,7 @@ export function Settings() {
                 <button
                   onClick={handleStartEditName}
                   title="Edit name"
-                  className="p-1.5 text-slate-400 hover:text-green-600 dark:hover:text-green-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors flex-none"
+                  className="p-1.5 rounded-md bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-800/50 transition-colors flex-none"
                 >
                   <Pencil className="h-3.5 w-3.5" />
                 </button>
