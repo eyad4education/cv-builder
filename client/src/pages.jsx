@@ -236,7 +236,8 @@ export function Dashboard() {
   async function handleDownload() {
     setIsDownloading(true);
     try {
-      await generatePDF(activeData);
+      const activeCvName = cvs.find((cv) => cv.id === activeCvId)?.name;
+      await generatePDF(activeData, activeCvName);
     } catch (e) {
       console.error(e);
       alert('Failed to download PDF');

@@ -19,7 +19,7 @@ function normalizeLineItems(text) {
     .filter(Boolean);
 }
 
-export async function generatePDF(data) {
+export async function generatePDF(data, cvName) {
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
@@ -183,7 +183,7 @@ export async function generatePDF(data) {
     );
   }
 
-  const filenameBase = sanitizeFilename(data.personal.fullName || 'cv');
+  const filenameBase = sanitizeFilename(cvName || data.personal.fullName || 'cv');
   const fileName = `${filenameBase || 'cv'}.pdf`;
 
   if (!Capacitor.isNativePlatform()) {
