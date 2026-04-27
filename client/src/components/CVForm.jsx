@@ -1,4 +1,5 @@
-import { Plus, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { Plus, Trash2, Loader2 } from 'lucide-react';
 
 import {
   Button,
@@ -23,6 +24,51 @@ function EmptyState({ label }) {
 }
 
 export function CVForm({ data, onChange }) {
+  const [isReformulating, setIsReformulating] = useState(false);
+
+  async function handleReformulateSummary() {
+    if (!data.summary.trim() || isReformulating) return;
+    setIsReformulating(true);
+    try {
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=AIzaSyAe6E2q1X9EzNBybKR6X5PtFAnuV5Z2zhQ`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text: `Reformulate the following professional summary to fix grammar errors and improve its flow and professionalism. Keep it concise, engaging, and under 500 characters. Only return the final summary text without any surrounding quotes or extra commentary.\n\nSummary:\n${data.summary}`,
+                  },
+                ],
+              },
+            ],
+          }),
+        }
+      );
+
+      const result = await response.json();
+      if (result.candidates && result.candidates[0].content.parts[0].text) {
+        let newSummary = result.candidates[0].content.parts[0].text.trim();
+        if (newSummary.startsWith('"') && newSummary.endsWith('"')) {
+          newSummary = newSummary.slice(1, -1).trim();
+        }
+        updateRoot('summary', newSummary.slice(0, 500));
+      } else {
+        console.error('Unexpected API response:', result);
+        alert('Failed to reformulate summary. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error reformulating summary:', error);
+      alert('An error occurred while reformulating. Please try again later.');
+    } finally {
+      setIsReformulating(false);
+    }
+  }
   function updateRoot(field, value) {
     onChange({
       ...data,
@@ -217,9 +263,24 @@ export function CVForm({ data, onChange }) {
       </div>
 
       <div className={panelClassName}>
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-2 mb-4 transition-colors">
-          Professional Summary
-        </h2>
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-2 mb-4 transition-colors">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white transition-colors">
+            Professional Summary
+          </h2>
+          <button
+            type="button"
+            onClick={handleReformulateSummary}
+            disabled={!data.summary.trim() || isReformulating}
+            title="Reformulate and fix grammar"
+            className="flex-none w-8 h-8 min-w-[2rem] min-h-[2rem] flex items-center justify-center bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-800 border border-indigo-200 dark:border-indigo-700 shadow-sm rounded-md transition-colors disabled:opacity-50 disabled:pointer-events-none"
+          >
+            {isReformulating ? (
+              <Loader2 className="h-4 w-4 animate-spin text-indigo-600 dark:text-indigo-400 flex-none" />
+            ) : (
+              <span className="text-base leading-none select-none">✨</span>
+            )}
+          </button>
+        </div>
         <div className="relative">
           <textarea
             className={`${textareaClassName} h-32 resize-none`}
