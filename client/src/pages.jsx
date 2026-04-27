@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Download, Monitor, Moon, Sun } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import { BottomNav } from './components/BottomNav';
 import { CVForm } from './components/CVForm';
@@ -15,9 +15,11 @@ import { generatePDF } from './utils/generatePDF';
 
 export function AuthPage({ mode }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { signIn, signUp } = useAuth();
   const { theme, setTheme } = useTheme();
   const isSignUp = mode === 'signup';
+  const justRegistered = !isSignUp && location.state?.registered === true;
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -42,19 +44,20 @@ export function AuthPage({ mode }) {
         }
 
         await signUp({ name, email, password });
+        // Registration done — user must sign in
+        navigate('/auth/signin', { state: { registered: true } });
+        return;
       } else {
         await signIn({ email, password });
+        navigate('/dashboard');
+        return;
       }
-
-      navigate('/dashboard');
     } catch (submitError) {
       setError(submitError.message || 'Something went wrong');
       setLoading(false);
-      return;
     }
-
-    setLoading(false);
   }
+
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors">
@@ -72,6 +75,15 @@ export function AuthPage({ mode }) {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
+              {justRegistered && (
+                <div className="rounded-lg bg-green-50 dark:bg-green-900/30 p-4 border border-green-200 dark:border-green-800 flex items-start gap-2">
+                  <span className="text-green-500 mt-0.5">✓</span>
+                  <p className="text-sm text-green-700 dark:text-green-300 font-medium">
+                    Account created! Please sign in.
+                  </p>
+                </div>
+              )}
+
               {error && (
                 <div className="rounded-lg bg-red-50 dark:bg-red-900/30 p-4 border border-red-200 dark:border-red-800">
                   <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
